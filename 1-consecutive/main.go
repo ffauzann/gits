@@ -1,19 +1,39 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strconv"
+	"strings"
+)
 
 func main() {
-	example1 := []int{1, 1, 0, 1, 1, 1}
-	example2 := []int{1, 0, 0, 1, 0, 1, 1}
-	example3 := []int{1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1}
+	var input string
+	fmt.Print("Input number (separated by comma with no space): ")
+	fmt.Scan(&input)
+	consecutive := ConsecutiveNumber(ParseInput(input))
+	fmt.Println(consecutive)
+}
 
-	consecutive1 := ConsecutiveNumber(example1)
-	consecutive2 := ConsecutiveNumber(example2)
-	consecutive3 := ConsecutiveNumber(example3)
+// ParseInput returns slice of int from the given input
+func ParseInput(s string) (ints []int) {
+	split := strings.Split(s, ",")
+	for idx := range split {
+		i, err := strconv.Atoi(split[idx])
+		if err != nil {
+			fmt.Println("Invalid input:", split[idx])
+			os.Exit(0)
+		}
 
-	fmt.Println(consecutive1)
-	fmt.Println(consecutive2)
-	fmt.Println(consecutive3)
+		if i != 0 && i != 1 {
+			fmt.Println("Invalid input: only 0 and 1 are allowed")
+			os.Exit(0)
+		}
+
+		ints = append(ints, i)
+	}
+
+	return
 }
 
 // ConsecutiveNumber returns the number of consecutive by given slice of number
